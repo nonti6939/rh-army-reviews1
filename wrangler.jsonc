@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "rh-army-reviews",
+  "name": "rh-army-reviews1",
   "main": "worker.js",
   "compatibility_date": "2026-09-20",
   "assets": {
@@ -12,7 +12,7 @@
     {
       "binding": "DB",
       "database_name": "rh-army-reviews-db",
-      "database_id": "REPLACE_WITH_YOUR_DATABASE_ID"
+      "database_id": "dcd34ad9-1fe7-4965-808e-315b0d0c0a14"
     }
   ]
 }
