@@ -4,7 +4,7 @@
   "main": "worker.js",
   "compatibility_date": "2026-09-20",
   "vars": {
-    "ADMIN_PASSWORD": "CHANGE-THIS-TO-A-LONG-PASSWORD"
+    "ADMIN_PASSWORD": "1234@"
   },
   "assets": {
     "directory": "./public",
