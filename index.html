@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RH ARMY — PC & mobile tuning, editing, software setup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FFFFFF;
+    --panel: #F6F7F8;
+    --line: #E5E7EA;
+    --text: #1A1D21;
+    --text-dim: #6B7280;
+    --accent: #2F6FED;
+    --accent-dark: #1E4FBB;
+    --accent-soft: #EAF1FE;
+
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  *, *::before, *::after { box-sizing: inherit; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); scroll-behavior: smooth; }
+
+  html, body { margin: 0; background: var(--bg); color: var(--text); }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 { font-family: 'Inter', sans-serif; font-weight: 700; margin: 0; letter-spacing: -0.01em; }
+  a { color: inherit; }
+
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+  header {
+    position: sticky;
+    top: 0;
+    padding-top: env(safe-area-inset-top, 0px);
+    z-index: 10;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  header .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .logo { font-weight: 700; font-size: 1.1rem; }
+  nav { display: flex; align-items: center; gap: 24px; }
+  nav a.navlink { color: var(--text-dim); text-decoration: none; font-size: 0.92rem; }
+  nav a.navlink:hover { color: var(--text); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.92rem;
+    padding: 11px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    border: 1px solid var(--accent);
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  .btn:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
+  .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--line); }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+
+  main { position: relative; z-index: 1; }
+  section { padding: 72px 0; border-bottom: 1px solid var(--line); }
+  section:last-of-type { border-bottom: none; }
+
+  .section-head { margin-bottom: 32px; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .section-head h2 { font-size: 1.5rem; }
+  .section-head p { color: var(--text-dim); margin-top: 6px; font-size: 0.96rem; }
+  .section-head .count { color: var(--text-dim); font-size: 0.88rem; white-space: nowrap; }
+
+  /* HERO */
+  .hero { padding-top: 64px; padding-bottom: 64px; text-align: left; }
+  .hero h1 { font-size: clamp(2rem, 4.5vw, 2.9rem); line-height: 1.15; max-width: 18ch; }
+  .hero .sub { margin-top: 18px; color: var(--text-dim); max-width: 52ch; font-size: 1.05rem; }
+  .hero .cta-row { margin-top: 28px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .hero .stats { margin-top: 40px; display: flex; gap: 40px; flex-wrap: wrap; }
+  .hero .stats div strong { display: block; font-size: 1.4rem; }
+  .hero .stats div span { color: var(--text-dim); font-size: 0.88rem; }
+
+  /* SERVICES */
+  .svc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .svc-card { border: 1px solid var(--line); border-radius: 10px; padding: 20px; }
+  .svc-card h3 { font-size: 1.05rem; margin-bottom: 6px; }
+  .svc-card p { margin: 0; color: var(--text-dim); font-size: 0.92rem; }
+
+  /* REVIEWS */
+  .review { padding: 22px 0; border-top: 1px solid var(--line); }
+  .review:first-of-type { border-top: none; }
+  .review-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; gap: 12px; }
+  .review-top .who { font-weight: 600; }
+  .review-top .date { color: var(--text-dim); font-size: 0.85rem; white-space: nowrap; }
+  .stars { color: var(--accent); font-size: 0.95rem; letter-spacing: 2px; margin-bottom: 8px; }
+  .stars .empty { color: var(--line); }
+  .review p.body-text { margin: 0; font-size: 0.98rem; overflow-wrap: anywhere; }
+  .review .service { display: inline-block; margin-top: 10px; font-size: 0.82rem; color: var(--text-dim); background: var(--panel); padding: 3px 10px; border-radius: 100px; }
+
+  .reviews-state { color: var(--text-dim); font-size: 0.95rem; padding: 8px 0 22px; }
+  .reviews-state.err { color: #C0362C; }
+
+  .reviews-footer { margin-top: 32px; border-top: 1px solid var(--line); padding-top: 32px; }
+  .reviews-footer > p { margin: 0 0 20px; color: var(--text-dim); font-size: 0.95rem; }
+
+  .review-form { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 24px; max-width: 520px; }
+  .field { margin-bottom: 16px; }
+  .field:last-of-type { margin-bottom: 0; }
+  .field label { display: block; font-size: 0.85rem; color: var(--text-dim); margin-bottom: 6px; }
+  .field input[type="text"], .field select, .field textarea {
+    width: 100%;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    padding: 10px 12px;
+  }
+  .field textarea { resize: vertical; min-height: 90px; }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); outline: none; }
+
+  /* Honeypot: visually hidden but present in the DOM/tab order-safe for real users */
+  .hp-field { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+  .rating-picker { display: flex; gap: 6px; }
+  .rating-picker button {
+    width: 36px; height: 34px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+  .rating-picker button.active { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-dark); }
+
+  .form-note { font-size: 0.82rem; color: var(--text-dim); margin-top: 14px; }
+  .form-status { font-size: 0.85rem; margin-top: 12px; min-height: 1.2em; }
+  .form-status.ok { color: var(--accent-dark); }
+  .form-status.err { color: #C0362C; }
+
+  footer .wrap {
+    padding: 44px 24px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  footer .foot-left h2 { font-size: 1.3rem; }
+  footer .foot-left p { color: var(--text-dim); margin-top: 6px; font-size: 0.92rem; }
+
+  @media (max-width: 640px) {
+    .svc-grid { grid-template-columns: 1fr; }
+    nav .navlink { display: none; }
+    section { padding: 52px 0; }
+    .hero .stats { gap: 28px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+  }
+
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="logo">RH ARMY</div>
+    <nav>
+      <a class="navlink" href="#services">Services</a>
+      <a class="navlink" href="#reviews">Reviews</a>
+      <a class="btn" id="join-top" href="#" target="_blank" rel="noopener">Join the Discord</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="wrap">
+      <h1>Performance tuning for the machines you actually use.</h1>
+      <p class="sub">RH ARMY is a Discord-run shop for PC optimization, mobile tuning, video &amp; photo editing, and paid software setup. Book the exact job, get it done by someone who does this daily.</p>
+      <div class="cta-row">
+        <a class="btn" href="#" id="join-hero" target="_blank" rel="noopener">Join the Discord</a>
+        <a class="btn btn-ghost" href="#reviews">See what people say</a>
+      </div>
+      <div class="stats">
+        <div><strong id="stat-rating">—</strong><span>Avg. rating</span></div>
+        <div><strong id="stat-count">—</strong><span>Reviews</span></div>
+        <div><strong>&lt;24h</strong><span>Typical turnaround</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Services</h2>
+          <p>Pick the job you need — no bundles required.</p>
+        </div>
+      </div>
+      <div class="svc-grid">
+        <div class="svc-card">
+          <h3>PC optimization</h3>
+          <p>Debloat, driver and BIOS tuning, thermal profiles, and FPS tuning for the games or apps you actually run.</p>
+        </div>
+        <div class="svc-card">
+          <h3>Mobile tuning</h3>
+          <p>Android and iOS performance tuning, battery and thermal profiles, and bloatware removal.</p>
+        </div>
+        <div class="svc-card">
+          <h3>Editing services</h3>
+          <p>Video and photo editing, color grading, and motion graphics for creators and small teams.</p>
+        </div>
+        <div class="svc-card">
+          <h3>Paid software &amp; setup</h3>
+          <p>Licensed software installs, workstation setup, and custom configs, done correctly the first time.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="reviews">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Reviews</h2>
+          <p>What people are saying after a session.</p>
+        </div>
+        <span class="count" id="review-count"></span>
+      </div>
+
+      <div id="reviews-state" class="reviews-state">Loading reviews…</div>
+      <div id="review-list"></div>
+
+      <div class="reviews-footer">
+        <p>Had work done with RH ARMY? Leave a review below — it goes live right away.</p>
+
+        <form class="review-form" id="review-form" novalidate>
+          <div class="field">
+            <label for="rf-name">Name or handle</label>
+            <input type="text" id="rf-name" name="name" required maxlength="60" autocomplete="name">
+          </div>
+
+          <div class="field">
+            <label for="rf-service">Service used</label>
+            <select id="rf-service" name="service" required>
+              <option value="" disabled selected>Select one</option>
+              <option>PC optimization</option>
+              <option>Mobile tuning</option>
+              <option>Editing services</option>
+              <option>Paid software &amp; setup</option>
+              <option>Something else</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="rf-rating-group">Rating</label>
+            <div class="rating-picker" id="rf-rating-group" role="radiogroup" aria-label="Rating out of 5">
+              <button type="button" data-value="1" role="radio" aria-checked="false">1</button>
+              <button type="button" data-value="2" role="radio" aria-checked="false">2</button>
+              <button type="button" data-value="3" role="radio" aria-checked="false">3</button>
+              <button type="button" data-value="4" role="radio" aria-checked="false">4</button>
+              <button type="button" data-value="5" role="radio" aria-checked="false">5</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="rf-text">Review</label>
+            <textarea id="rf-text" name="text" required maxlength="800" placeholder="What did we work on, and how'd it go?"></textarea>
+          </div>
+
+          <!-- Honeypot — real visitors leave this blank; bots that fill every field trip it -->
+          <div class="field hp-field" aria-hidden="true">
+            <label for="rf-company">Company</label>
+            <input type="text" id="rf-company" name="company" tabindex="-1" autocomplete="off">
+          </div>
+
+          <button type="submit" class="btn" id="rf-submit">Send review →</button>
+          <div class="form-status" id="rf-status" role="status" aria-live="polite"></div>
+          <p class="form-note">Your review is saved and shown on this page for everyone.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-left">
+      <h2>Get your setup tuned.</h2>
+      <p>Open a ticket in the Discord and tell us what's slow.</p>
+    </div>
+    <a class="btn" href="#" id="join-footer" target="_blank" rel="noopener">Join the Discord</a>
+  </div>
+</footer>
+
+<script>
+  // Replace with your real Discord invite link.
+  const DISCORD_INVITE = "https://discord.gg/jPwBPX7JVD";
+  ["join-top", "join-hero", "join-footer"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.href = DISCORD_INVITE;
+  });
+
+  const API_URL = "/api/reviews";
+
+  function starString(rating) {
+    const full = "★".repeat(rating);
+    const empty = "★".repeat(5 - rating);
+    return empty
+      ? `${full}<span class="empty">${empty}</span>`
+      : full;
+  }
+
+  function formatDate(iso) {
+    try {
+      return new Date(iso).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+    } catch {
+      return "";
+    }
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function renderReviews(reviews) {
+    const list = document.getElementById("review-list");
+    const state = document.getElementById("reviews-state");
+    const count = document.getElementById("review-count");
+    const statRating = document.getElementById("stat-rating");
+    const statCount = document.getElementById("stat-count");
+
+    if (!reviews.length) {
+      state.textContent = "No reviews yet — be the first.";
+      state.className = "reviews-state";
+      list.innerHTML = "";
+      count.textContent = "";
+      statRating.textContent = "—";
+      statCount.textContent = "0";
+      return;
+    }
+
+    state.textContent = "";
+    count.textContent = `${reviews.length} review${reviews.length === 1 ? "" : "s"}`;
+
+    const avg = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+    statRating.textContent = `${avg.toFixed(1)} / 5`;
+    statCount.textContent = String(reviews.length);
+
+    list.innerHTML = reviews.map(r => `
+      <div class="review">
+        <div class="review-top">
+          <span class="who">${escapeHtml(r.name)}</span>
+          <span class="date">${formatDate(r.created_at)}</span>
+        </div>
+        <div class="stars">${starString(r.rating)}</div>
+        <p class="body-text">${escapeHtml(r.text)}</p>
+        <span class="service">${escapeHtml(r.service)}</span>
+      </div>
+    `).join("");
+  }
+
+  async function loadReviews() {
+    const state = document.getElementById("reviews-state");
+    try {
+      const res = await fetch(API_URL);
+      if (!res.ok) throw new Error("bad response");
+      const reviews = await res.json();
+      renderReviews(reviews);
+    } catch (err) {
+      state.textContent = "Couldn't load reviews right now. Refresh to try again.";
+      state.className = "reviews-state err";
+    }
+  }
+
+  (function () {
+    const ratingGroup = document.getElementById('rf-rating-group');
+    const ratingButtons = Array.from(ratingGroup.querySelectorAll('button'));
+    let rating = 0;
+
+    ratingButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        rating = Number(btn.dataset.value);
+        ratingButtons.forEach(b => {
+          const active = Number(b.dataset.value) <= rating;
+          b.classList.toggle('active', active);
+          b.setAttribute('aria-checked', String(Number(b.dataset.value) === rating));
+        });
+      });
+    });
+
+    const form = document.getElementById('review-form');
+    const status = document.getElementById('rf-status');
+    const submitBtn = document.getElementById('rf-submit');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      status.textContent = '';
+      status.className = 'form-status';
+
+      const name = form.name.value.trim();
+      const service = form.service.value;
+      const text = form.text.value.trim();
+      const company = form.company.value; // honeypot
+
+      if (!name || !service || !text || rating === 0) {
+        status.textContent = 'Fill in your name, service, rating, and review before sending.';
+        status.className = 'form-status err';
+        return;
+      }
+
+      submitBtn.disabled = true;
+      status.textContent = 'Sending…';
+
+      try {
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, service, rating, text, company }),
+        });
+
+        if (!res.ok) throw new Error('request failed');
+
+        form.reset();
+        rating = 0;
+        ratingButtons.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-checked', 'false'); });
+
+        status.textContent = 'Thanks — your review is live.';
+        status.className = 'form-status ok';
+
+        loadReviews();
+      } catch (err) {
+        status.textContent = 'Something went wrong sending that. Try again in a moment.';
+        status.className = 'form-status err';
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+  })();
+
+  loadReviews();
+</script>
+
+</body>
+</html>
